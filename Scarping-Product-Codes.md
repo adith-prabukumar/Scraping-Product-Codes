@@ -115,25 +115,40 @@ Here we scrape the watches UPC from walmart:
     
 The variable Product code contains all the walmart product codes of the products in the first 10 pages. Now We will loop through these pages to get the UPCs
 
-        UPC=[]
+        upc=[]
+        item_ID=[]
+        product_name=[]
         for prod_code in product_code:
             item_url= 'https://www.walmart.com/reviews/product/'+ prod_code +'?page=2'
             r = requests.get(item_url,headers=proxy_headers)
 
             r.status_code
 
-            soup = BeautifulSoup(r.text,'html.parser')
-
+            soup = BeautifulSoup(urlopen(item_url),'html.parser')
             for val in soup.find_all("script"):
-                if 'upc' in val:
-                    print(val.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1])
-                    prob_dict = val.text.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1]
+                #print(val)
+                if 'upc' in str(val):
+                    val=str(val)
+                    prob_dict = val.split('upc')[1]
+                    UPC=prob_dict.split(',')[0]
+                    UPC=UPC[3:-1]
+                    upc.append(UPC)
+                    prob_dict = val.split('usItemId')[1]
+                    item_id=prob_dict.split(',')[0]
+                    item_id=item_id[3:-1]
+                    item_ID.append(item_id)
+                    prob_dict = val.split('productName')[1]
+                    product=prob_dict.split(',')[0]
+                    product=product[3:-1]
+                    product_name.append(product)
 
-            for k,v in json.loads(prob_dict.strip()[:-1])["product"]["products"].items():
-                    product_code = k
-                    upc= json.loads(prob_dict.strip()[:-1])["product"]["products"][k]["upc"]
-            upc.append(UPC)
+Doing this will give us a data base of product name and its corresponding walmart code and upc.
 
+                df_dict={"Product Name": product_name, "Walmart Product Code": item_ID, "UPC": upc}
+                df=pd.DataFrame(df_dict)
+                df.to_csv("UPCs of Walmart Watches")
+                
+                
 ## Conclusion
 
 Here we saw what Product codes are and its different types- UPC, EAN, ASIN, ISBN. We also saw data providers that analyse products from various platforms to see its trends and

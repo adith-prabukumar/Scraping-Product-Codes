@@ -29,6 +29,9 @@ Amazon.com. For books, the ASIN is the same as the ISBN, but for all other produ
 These are the commonly used types of codes. But many stores have product codes of their own. For Example, the product *Invicta Men's Pro Diver Scuba 48mm Gold Tone Stainless Steel
 Quartz Watch* is available on Walmart with a product code- 39825323. But this product has a UPC-843836069830. The UPC code is used to find the product regardless of the platform 
 from which it's being sold on.
+
 [https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=843836069830](https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=843836069830)
+
 [https://www.walmart.com/search/?query=843836069830](https://www.walmart.com/search/?query=843836069830)
+
 clicking on the first result, you will get [https://www.walmart.com/ip/Invicta-Men-s-Pro-Diver-6983-Gold-Rubber-Swiss-Chronograph-Fashion-Watch/39825323](https://www.walmart.com/ip/Invicta-Men-s-Pro-Diver-6983-Gold-Rubber-Swiss-Chronograph-Fashion-Watch/39825323)

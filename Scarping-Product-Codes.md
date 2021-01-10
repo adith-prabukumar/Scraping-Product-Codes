@@ -80,27 +80,61 @@ product code, upc etc.
 
 In the case of Walmart, this can be found in the product reviews page source. We can then call a parser to parse this and collect the dictionary and collect the upc from this.
 
-The python code block is illustrated below:
+The python code block on scraping the first 10 pages of walmart products is illustrated below:
 
-    import requests
-    import json
-    from bs4 import BeautifulSoup
+Here we scrape the watches UPC from walmart:
+
+        my_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              + "(KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"}
+
+        querystring = {"page":"10", 'product_url':'https://www.walmart.com/search/?query=watch'}
+        item_url=[]
+
+        total_pages=int(querystring["page"])
+
+
+        for i in range(1,total_pages+1):
     
-    url = 'https://www.walmart.com/reviews/product/43928713?page=2'
-    r = requests.get(url,headers=proxy_headers)
+            url='https://www.walmart.com/search/?page='+ str(i) +'&ps=48&query=watches'
+            r= requests.get(url, headers= my_header)
+            price_per_page=[]
+            if r.status_code==200:
+                soup_main= BeautifulSoup(r.content, 'html')
+                
+                summary=soup_main.find('div', {'class':'search-product-result', 'id':'searchProductResult'})
+                product_list= summary.find_all('li')
+                for prod in product_list:
+                    try:
+                        item_url.append(prod.find('a', {"class":"product-title-link line-clamp line-clamp-2 truncate-title"}).get('href'))
+                    except:
+                        pass
+            else:
+                print("Error-",r.status_code)
 
-    r.status_code
+        product_code=[u.split('/')[-1] for u in item_url]
+    
+The variable Product code contains all the walmart product codes of the products in the first 10 pages. Now We will loop through these pages to get the UPCs
 
-    soup = BeautifulSoup(r.text,'html.parser')
-    for val in soup.find_all("script"):
-        if 'upc' in val.text:
-            prob_dict = val.text.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1]
+        UPC=[]
+        for prod_code in product_code:
+            item_url= 'https://www.walmart.com/reviews/product/'+ prod_code +'?page=2'
+            r = requests.get(item_url,headers=proxy_headers)
 
-    for k,v in json.loads(prob_dict.strip()[:-1])["product"]["products"].items():
-        product_code = k
-        print(json.loads(prob_dict.strip()[:-1])["product"]["products"][k]["upc"])
+            r.status_code
+
+            soup = BeautifulSoup(r.text,'html.parser')
+
+            for val in soup.find_all("script"):
+                if 'upc' in val:
+                    print(val.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1])
+                    prob_dict = val.text.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1]
+
+            for k,v in json.loads(prob_dict.strip()[:-1])["product"]["products"].items():
+                    product_code = k
+                    upc= json.loads(prob_dict.strip()[:-1])["product"]["products"][k]["upc"]
+            upc.append(UPC)
 
 ## Conclusion
 
 Here we saw what Product codes are and its different types- UPC, EAN, ASIN, ISBN. We also saw data providers that analyse products from various platforms to see its trends and
-gain insights. We also looked the various UPC databases and checked how we can create these databases of our own.
+gain insights. We also looked the various UPC databases and checked how we can create these databases of our own. 

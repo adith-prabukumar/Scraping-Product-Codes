@@ -71,3 +71,31 @@ There are also large databases that contain UPCs and we can search through them.
 Here all we need to do is type in the UPC and we get details on the product. It is shown below as we search a product with UPC 843836069830
 
 Some other websites that do a similar function are [www.upcitemdb.com](www.upcitemdb.com), [scandit.com/upc-lookup](scandit.com/upc-lookup), [barcodesdatabase.org](barcodesdatabase.org)
+
+
+## How to scrape UPC codes?
+
+UPC codes can be found on all the product websites if you look close enough. Every product contains a dictionary which includes all product info- name, price, description,
+product code, upc etc.
+
+In the case of Walmart, this can be found in the product reviews page source. We can then call a parser to parse this and collect the dictionary and collect the upc from this.
+
+The python code block is illustrated below:
+
+    import requests
+    import json
+    from bs4 import BeautifulSoup
+    
+    url = 'https://www.walmart.com/reviews/product/43928713?page=2'
+    r = requests.get(url,headers=proxy_headers)
+
+    r.status_code
+
+    soup = BeautifulSoup(r.text,'html.parser')
+    for val in soup.find_all("script"):
+        if 'upc' in val.text:
+            prob_dict = val.text.split('window.__WML_REDUX_INITIAL_STATE__ = ')[1]
+
+    for k,v in json.loads(prob_dict.strip()[:-1])["product"]["products"].items():
+        product_code = k
+        print(json.loads(prob_dict.strip()[:-1])["product"]["products"][k]["upc"])

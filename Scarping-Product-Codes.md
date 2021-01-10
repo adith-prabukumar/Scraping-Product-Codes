@@ -103,4 +103,4 @@ The python code block is illustrated below:
 ## Conclusion
 
 Here we saw what Product codes are and its different types- UPC, EAN, ASIN, ISBN. We also saw data providers that analyse products from various platforms to see its trends and
-gain insights. We also looked the various UPC databases and checked how we can create theses databases of our own.
+gain insights. We also looked the various UPC databases and checked how we can create these databases of our own.

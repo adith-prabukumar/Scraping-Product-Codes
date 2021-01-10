@@ -69,4 +69,5 @@ This is similar to the synccentric, wherein they do various bulk conversions. Th
 The above sites provide product analytics and information of product across the various platforms it is being sold on.
 There are also large databases that contain UPCs and we can search through them. One particular example of it is [barcodelookup.com](barcodelookup.com)
 Here all we need to do is type in the UPC and we get details on the product. It is shown below as we search a product with UPC 843836069830
+
 Some other websites that do a similar function are [www.upcitemdb.com](www.upcitemdb.com), [scandit.com/upc-lookup](scandit.com/upc-lookup), [barcodesdatabase.org](barcodesdatabase.org)
